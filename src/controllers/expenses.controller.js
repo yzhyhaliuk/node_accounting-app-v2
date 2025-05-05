@@ -2,9 +2,12 @@ const expensesService = require('../services/expenses.service');
 
 const getAll = async (req, res) => {
   const { userId, categories, from, to } = req.query;
+  const categoriesArray = categories
+    ? categories.split(',').map((cat) => cat.trim())
+    : undefined;
   const expenses = await expensesService.getAll({
     userId,
-    categories,
+    categories: categoriesArray,
     from,
     to,
   });
@@ -82,6 +85,10 @@ const update = async (req, res) => {
     return;
   }
 
+  if (!spentAt && !title && !amount && !category && !note) {
+    res.status(400).send('Bad Request');
+  }
+
   const expense = await expensesService.update({
     id,
     spentAt,
@@ -95,10 +102,6 @@ const update = async (req, res) => {
     res.status(404).send('Not Found');
 
     return;
-  }
-
-  if (!spentAt && !title && !amount && !category && !note) {
-    res.status(400).send('Bad Request');
   }
 
   res.status(200).json(expense);

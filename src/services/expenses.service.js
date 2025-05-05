@@ -10,7 +10,7 @@ function getAll({ userId, categories, from, to }) {
   }
 
   if (categories) {
-    exp = exp.filter((item) => item.category === categories);
+    exp = exp.filter((item) => categories.includes(item.category));
   }
 
   if (from) {
@@ -61,7 +61,7 @@ function deleteById(id) {
     return null;
   }
 
-  const exp = expenses.splice(index, 1);
+  const [exp] = expenses.splice(index, 1);
 
   return exp;
 }
