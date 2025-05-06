@@ -1,5 +1,3 @@
-const { users } = require('./users.service');
-
 let expenses = [];
 
 function getAll({ userId, categories, from, to }) {
@@ -33,12 +31,6 @@ function getById(id) {
 }
 
 function create({ userId, spentAt, title, amount, category, note }) {
-  const user = users.find((us) => us.id === +userId);
-
-  if (!user) {
-    return null;
-  }
-
   const exp = {
     id: Date.now(),
     userId: +userId,

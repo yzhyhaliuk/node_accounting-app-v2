@@ -1,4 +1,5 @@
 const expensesService = require('../services/expenses.service');
+const { users } = require('../services/users.service');
 
 const getAll = async (req, res) => {
   const { userId, categories, from, to } = req.query;
@@ -44,6 +45,14 @@ const create = async (req, res) => {
     return;
   }
 
+  const user = users.find((us) => us.id === +userId);
+
+  if (!user) {
+    res.status(400).send('Bad Request');
+
+    return;
+  }
+
   const expense = await expensesService.create({
     userId,
     spentAt,
@@ -52,12 +61,6 @@ const create = async (req, res) => {
     category,
     note,
   });
-
-  if (expense === null) {
-    res.status(400).send('Bad Request');
-
-    return;
-  }
 
   res.status(201).json(expense);
 };
@@ -99,7 +102,7 @@ const update = async (req, res) => {
   });
 
   if (expense === null) {
-    res.status(404).send('Not Found');
+    res.status(404).end();
 
     return;
   }
