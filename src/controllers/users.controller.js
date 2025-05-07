@@ -1,12 +1,12 @@
 const usersService = require('../services/users.service');
 
-const getAll = async (req, res) => {
-  const users = await usersService.getAll();
+const getAll = (req, res) => {
+  const users = usersService.getAll();
 
   return res.status(200).json(users);
 };
 
-const getById = async (req, res) => {
+const getById = (req, res) => {
   const id = req.params.id;
 
   if (!id) {
@@ -15,7 +15,7 @@ const getById = async (req, res) => {
     return;
   }
 
-  const user = await usersService.getById(id);
+  const user = usersService.getById(id);
 
   if (!user) {
     res.status(404).send('Not Found');
@@ -26,7 +26,7 @@ const getById = async (req, res) => {
   res.status(200).json(user);
 };
 
-const create = async (req, res) => {
+const create = (req, res) => {
   const name = req.body.name;
 
   if (!name) {
@@ -35,14 +35,14 @@ const create = async (req, res) => {
     return;
   }
 
-  const user = await usersService.create(name);
+  const user = usersService.create(name);
 
   res.status(201).json(user);
 };
 
-const deleteById = async (req, res) => {
+const deleteById = (req, res) => {
   const id = req.params.id;
-  const user = await usersService.deleteById(id);
+  const user = usersService.deleteById(id);
 
   if (user === null) {
     res.status(404).send('Not Found');
@@ -53,7 +53,7 @@ const deleteById = async (req, res) => {
   res.status(204).send();
 };
 
-const update = async (req, res) => {
+const update = (req, res) => {
   const id = req.params.id;
   const name = req.body.name;
 
@@ -63,7 +63,7 @@ const update = async (req, res) => {
     return;
   }
 
-  const user = await usersService.update({ id, name });
+  const user = usersService.update({ id, name });
 
   if (user === null) {
     res.status(404).send('Not Found');
